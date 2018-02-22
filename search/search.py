@@ -88,7 +88,6 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
     from game import Directions
-
     stack = util.Stack()
     stack.push((problem.getStartState(), []))
     visited = []
