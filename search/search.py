@@ -95,13 +95,13 @@ def depthFirstSearch(problem):
     while not stack.isEmpty():
         node, directions = stack.pop()
         if problem.isGoalState(node):
-            print directions
             return directions
         for successor in problem.getSuccessors(node):
             if successor[0] not in visited:
                 newdirections = directions + [successor[1]]
                 stack.push((successor[0], newdirections))
                 visited.append(successor[0])
+    return [Directions.STOP]
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -114,13 +114,13 @@ def breadthFirstSearch(problem):
     while not queue.isEmpty():
         node, directions = queue.pop()
         if problem.isGoalState(node):
-            print directions
             return directions
         for successor in problem.getSuccessors(node):
             if successor[0] not in visited:
                 newdirections = directions + [successor[1]]
                 queue.push((successor[0], newdirections))
                 visited.append(successor[0])
+    return [Directions.STOP]
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
