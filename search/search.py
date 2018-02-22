@@ -132,18 +132,19 @@ def uniformCostSearch(problem):
     "*** YOUR CODE HERE ***"
     from game import Directions
 
-    pqueue = util.PriorityQueue()
-    pqueue.push((problem.getStartState(), []), problem.getCostOfActions([]))
+    frontier = util.PriorityQueue()
+    frontier.push((problem.getStartState(), []), 0)
     visited = []
-    while not pqueue.isEmpty():
-        node, directions = pqueue.pop()
+    while not frontier.isEmpty():
+        node, directions = frontier.pop()
         if problem.isGoalState(node):
             return directions
-        visited.append(node)
-        for successor in problem.getSuccessors(node):
-            if successor[0] not in visited:
-                newdirections = directions + [successor[1]]
-                pqueue.push((problem.getStartState(),newdirections), problem.getCostOfActions(newdirections))
+        if node not in visited:
+            visited.append(node)
+            for successor in problem.getSuccessors(node):
+                if successor[0] not in visited:
+                    newdirections = directions + [successor[1]]
+                    frontier.push((successor[0],newdirections), problem.getCostOfActions(newdirections))
 
     return [Directions.STOP]
 
