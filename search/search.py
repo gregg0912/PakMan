@@ -87,25 +87,29 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
+    from game import Directions
+
     stack = util.Stack()
     stack.push((problem.getStartState(), []))
-    visited = [problem.getStartState()]
+    visited = []
     # print visited
 
     while not stack.isEmpty():
         node, directions = stack.pop()
         if problem.isGoalState(node):
             return directions
+        visited.append(node)
         for successor in problem.getSuccessors(node):
             if successor[0] not in visited:
                 newdirections = directions + [successor[1]]
                 stack.push((successor[0], newdirections))
-                visited.append(successor[0])
     return [Directions.STOP]
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    from game import Directions
+
     queue = util.Queue()
     queue.push((problem.getStartState(), []))
     visited = [problem.getStartState()]
@@ -120,15 +124,28 @@ def breadthFirstSearch(problem):
                 newdirections = directions + [successor[1]]
                 queue.push((successor[0], newdirections))
                 visited.append(successor[0])
+
     return [Directions.STOP]
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    pqueue = util.PriorityQueue
-    pqueue.push((problem.getStartState(),[]),problem.getCostOfActions())
+    from game import Directions
 
-    # while not pqueue.isEmpty():
+    pqueue = util.PriorityQueue()
+    pqueue.push((problem.getStartState(), []), problem.getCostOfActions([]))
+    visited = []
+    while not pqueue.isEmpty():
+        node, directions = pqueue.pop()
+        if problem.isGoalState(node):
+            return directions
+        visited.append(node)
+        for successor in problem.getSuccessors(node):
+            if successor[0] not in visited:
+                newdirections = directions + [successor[1]]
+                pqueue.push((problem.getStartState(),newdirections), problem.getCostOfActions(newdirections))
+
+    return [Directions.STOP]
 
     util.raiseNotDefined()
 
