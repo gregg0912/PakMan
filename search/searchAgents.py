@@ -458,6 +458,7 @@ def foodHeuristic(state, problem):
     return 0
 
 class ClosestDotSearchAgent(SearchAgent):
+    import search
     "Search for all food using a sequence of searches"
     def registerInitialState(self, state):
         self.actions = []
@@ -484,9 +485,8 @@ class ClosestDotSearchAgent(SearchAgent):
         food = gameState.getFood()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
-
+        return search.uniformCostSearch(problem)
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -520,9 +520,9 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x,y = state
-
+        return self.food[x][y]
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
     """
