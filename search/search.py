@@ -88,36 +88,76 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
     from game import Directions
+    """
+    DFS will make use of the Stack data structure since the point of DFS is to traverse through the graph as deep as it can and backtrack afterwards
+
+    A tuple will be pushed into the stack comprised of the node and the list of actions that Pacman will take
+
+    An empty list of visited nodes is also initialized
+    """
     stack = util.Stack()
     stack.push((problem.getStartState(), []))
     visited = []
-    # print visited
 
+    """
+    The while loop is used to visit all of the nodes.
+    This loop will end once the stack is empty or the goal state is reached.
+    """
     while not stack.isEmpty():
         node, directions = stack.pop()
+        """
+        Check if the popped node (current node) is the goal state. If yes, return the list of directions.
+        """
         if problem.isGoalState(node):
             return directions
+        """
+        Since the node is popped from the stack, include it in the list of visited nodes.
+        """
         visited.append(node)
         for successor in problem.getSuccessors(node):
+            """
+            Get all of the 'successors' or 'children' of the current node
+            It will only be added into the stack if it has not been visited yet
+            """
             if successor[0] not in visited:
                 newdirections = directions + [successor[1]]
                 stack.push((successor[0], newdirections))
+    """
+    If the stack is already empty and the goal state still wasn't reached, the funtion will instead return Directions.STOP
+    """
     return [Directions.STOP]
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     from game import Directions
+    """
+    BFS will make use of the Queue data structure since the point of BFS is to traverse through the graph by level
 
+    A tuple will be pushed into the queue comprised of the node and the list of actions that Pacman will take
+
+    A list of visited nodes is initialized. The starting node is added to ensure that it will only be visited once.
+    """
     queue = util.Queue()
     queue.push((problem.getStartState(), []))
     visited = [problem.getStartState()]
-    # print visited
 
+    """
+    The while loop is used to visit all of the nodes.
+    This loop will end once the queue is empty or the goal state is reached.
+    """
     while not queue.isEmpty():
         node, directions = queue.pop()
+        """
+        Check if the popped node (current node) is the goal state. If yes, return the list of directions.
+        """
         if problem.isGoalState(node):
             return directions
+        """
+        Get all of the 'successors' or 'children' of the current node
+        It will only be added into the queue if it has not been visited yet.
+        After adding it to the queue, include it in the list of visited nodes
+        """
         for successor in problem.getSuccessors(node):
             if successor[0] not in visited:
                 newdirections = directions + [successor[1]]
@@ -131,15 +171,37 @@ def uniformCostSearch(problem):
     "*** YOUR CODE HERE ***"
     from game import Directions
 
+    """
+    UCS will make use of the PriorityQueue data structure since it can use the actions' cost as a priority in the heap
+
+    A tuple will be pushed into the priorityqueue comprised of the node and the list of actions that Pacman will take. An additional parameter is included which is the cost of the actions taken by Pacman
+
+    An empty list of visited nodes is initialized.
+    """
     frontier = util.PriorityQueue()
     frontier.push((problem.getStartState(), []), 0)
     visited = []
+    """
+    The while loop is used to visit all of the nodes.
+    This loop will end once the priorityqueue is empty or the goal state is reached.
+    """
     while not frontier.isEmpty():
         node, directions = frontier.pop()
+        """
+        Check if the popped node (current node) is the goal state. If yes, return the list of directions.
+        """
         if problem.isGoalState(node):
             return directions
+
+        """
+        If the current node is not yet visited, include it in the list and explore its successors
+        """
         if node not in visited:
             visited.append(node)
+            """
+            Get all of the 'successors' or 'children' of the current node
+            It will only be added into the priorityqueue if it has not been visited yet.
+            """
             for successor in problem.getSuccessors(node):
                 if successor[0] not in visited:
                     newdirections = directions + [successor[1]]
@@ -165,8 +227,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     frontier = util.PriorityQueue()
     frontier.push((problem.getStartState(), []), 0)
     visited = []
-    # print problem.getStartState()
-    print heuristic(problem.getStartState(),problem)
     while not frontier.isEmpty():
         node, directions = frontier.pop()
         if problem.isGoalState(node):
@@ -178,7 +238,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                     newdirections = directions + [successor[1]]
                     cost = problem.getCostOfActions(newdirections) + heuristic(successor[0],problem)
                     frontier.push((successor[0],newdirections), cost)
-                    print cost
 
     return [Directions.STOP]
     util.raiseNotDefined()
