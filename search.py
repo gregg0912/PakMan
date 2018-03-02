@@ -224,15 +224,39 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     from game import Directions
 
+    """
+    A* Search will make use of the PriorityQueue data structure since it can use the actions' cost + heuristics as a priority in the heap
+
+    A tuple will be pushed into the priorityqueue comprised of the node and the list of actions that Pacman will take. An additional parameter is included which is the cost of the actions + heuristics taken by Pacman
+
+    The heuristics function used is manhattanDistance which is found in searchAgents.py
+
+    An empty list of visited nodes is initialized.
+    """
+
     frontier = util.PriorityQueue()
     frontier.push((problem.getStartState(), []), 0)
     visited = []
+    """
+    The while loop is used to visit all of the nodes.
+    This loop will end once the priorityqueue is empty or the goal state is reached.
+    """
     while not frontier.isEmpty():
+        """
+        Check if the popped node (current node) is the goal state. If yes, return the list of directions.
+        """
         node, directions = frontier.pop()
         if problem.isGoalState(node):
             return directions
+        """
+        If the current node is not yet visited, include it in the list and explore its successors
+        """
         if node not in visited:
             visited.append(node)
+            """
+            Get all of the 'successors' or 'children' of the current node
+            It will only be added into the priorityqueue if it has not been visited yet.
+            """
             for successor in problem.getSuccessors(node):
                 if successor[0] not in visited:
                     newdirections = directions + [successor[1]]
