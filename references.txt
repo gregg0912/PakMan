@@ -1,3 +1,4 @@
 1.) CMSC 170 Slides
 2.) Gregg's and Eric's CMSC 142 DFS Slides
 3.) DFS and BFS Algorithms using Stacks and Queues by Lawrence L. Larmore of UNLV
+4.) Python 2.7.x Cheatsheet by Martin Bruchanov

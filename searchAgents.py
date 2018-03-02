@@ -494,7 +494,7 @@ def foodHeuristic(state, problem):
     if len(uneatenFood) == 0:
         return 0
     """
-        Get all distance from current position of pacman to each food in the current state and append all the distances
+        Get all distance from current position of pacman to each food in the current state and append all the distances,using mazeDistance function defined below,
         to the heuristicList list. It will then return the highest heuristics within the list. 
     """
     for corner in uneatenFood:
