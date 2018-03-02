@@ -481,7 +481,7 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    heuristic = 0
+    heuristicList = []
     uneatenFood = foodGrid.asList()
     # print uneatenFood
     if len(uneatenFood) == 0:
@@ -498,7 +498,8 @@ def foodHeuristic(state, problem):
     #     uneatenFood.remove(toRemove)
     for corner in uneatenFood:
         heuristic = mazeDistance(position, corner, problem.startingGameState)
-    return heuristic
+        heuristicList.append(heuristic)
+    return max(heuristicList)
 
 class ClosestDotSearchAgent(SearchAgent):
     import search
