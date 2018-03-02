@@ -565,7 +565,12 @@ class ClosestDotSearchAgent(SearchAgent):
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
         """
-        
+        For this search problem, we used uniform cost search as it is the fastest, greedy way of
+        solving the problem. It does so by following the action or list of actions with the least
+        cost.
+
+        It runs almost the same as BFS since it does not stop until a level has been traversed.
+        DFS runs a lot slower since it does some backtracking when traversing the maze.
         """
         return search.uniformCostSearch(problem)
 
