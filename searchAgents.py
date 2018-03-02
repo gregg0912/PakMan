@@ -294,15 +294,22 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
-        visited = []
-        return (self.startingPosition, visited)
+        """
+        The start state returned is a tuple consisiting of the starting position of pacman,
+        and a list of visited corners. In this case, the list will be blank as there are not visited corners yet.
+        """
+        return (self.startingPosition, [])
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
+        """
+        A state is a tuple composed of pacman's current position and the visited corners
+
+        The goal state is reached if all of the corners are reached. In this case, it means that the length
+        of the list is equal to 4
+        """
         return len(state[1]) == 4
 
     def getSuccessors(self, state):
@@ -319,9 +326,19 @@ class CornersProblem(search.SearchProblem):
         successors = []
         currentPosition = state[0]
         foundCorners = state[1]
+        """
+        The for loop checks all of the directions and returns an action's x and y coordinates.
+
+        If the next position (denoted by the tuple (nextx, nexty)) is not a wall, it must also be checked if it is
+        actually a corner that needs to be visited.
+
+            If it is a corner that has not been visited, it will be added to the list of found corners so that it can
+            be noted that the corner is already visited.
+
+            However, if it is just a state that Pacman can pass through, it will be simply added as a successor with
+            the list of found corners not changing.
+        """
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            # Add a successor state to the successor list if the action is legal
-            # Here's a code snippet for figuring out whether a new position hits a wall:
             x,y = currentPosition
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
@@ -368,16 +385,33 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
     "*** YOUR CODE HERE ***"
     unvisitedCorners = []
+    visitedCorners = state[1]
     node = state[0]
     heuristic = 0
 
-    for corner in corners:
-        if corner in state[1]:
-            continue
-        unvisitedCorners.append(corner)
 
+    """
+    This for loop gets all of the unvisited corners based on the corners not found in the list
+    of visited corners (state[1])
+    """
+    unvisitedCorners = [corner for corner in corners if corner not in visitedCorners]
+
+
+    """
+    This while loop is used to find the minimum distance that pacman should travel to visit all corners.
+
+    This loop will end once all the corners have been 'visited' and the sum of all minimum distances has been
+    calculated.
+    """
     while unvisitedCorners:
         minDistance = 99999
+        """
+        This for loop will be used to check the manhattan distance of a corner to a set position.
+        On first loop, the node will be the current position of pacman.
+
+        Once the minimum is found, the node will now be the nearest corner to pacman and the distance will be added
+        to the value of the heuristic. The corner will be removed as it has been 'visited' by pacman.
+        """
         for corner in unvisitedCorners:
             manhattanDist = util.manhattanDistance(node, corner)
             if manhattanDist < minDistance:
@@ -484,19 +518,10 @@ def foodHeuristic(state, problem):
     heuristic = 0
     uneatenFood = foodGrid.asList()
     heuristicList = []
-    # print uneatenFood
+
     if len(uneatenFood) == 0:
         return 0
-    # while uneatenFood:
-    #     minDistance = 99999
-    #     for corner in uneatenFood:
-    #         manhattanDist = mazeDistance(position, corner, problem.startingGameState)
-    #         if manhattanDist < minDistance:
-    #             minDistance = manhattanDist
-    #             toRemove = corner
-    #     heuristic += minDistance
-    #     position = toRemove
-    #     uneatenFood.remove(toRemove)
+
     for corner in uneatenFood:
         heuristic = mazeDistance(position, corner, problem.startingGameState)
         heuristicList.append(heuristic)
@@ -530,6 +555,9 @@ class ClosestDotSearchAgent(SearchAgent):
         food = gameState.getFood()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
+        """
+        
+        """
         return search.uniformCostSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -565,6 +593,9 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         """
         x,y = state
         """
+        Based on the food grid of the game, the function checks if there is food on the grid (denoted
+        by T)
+
         Returns T or True if the given state has food. Returns F or False, otherwise.
         """
         return self.food[x][y]
