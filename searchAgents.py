@@ -529,7 +529,8 @@ def foodHeuristic(state, problem):
         return 0
     """
         Get all distance from current position of pacman to each food in the current state and append all the distances,using mazeDistance function defined below,
-        to the heuristicList list. It will then return the highest heuristics/the heuristic derived from the farthest food within the list.
+        to the heuristicList list. It will then return the highest heuristics/the heuristic derived from the farthest food within the list. It will refer to the farthest food
+        in the food grid in relation to Pacman so that it will not take longer paths going to the last food it will eat and will find shortcuts to get to it while eating all the food.
     """
     for corner in uneatenFood:
         heuristic = mazeDistance(position, corner, problem.startingGameState)

@@ -126,6 +126,7 @@ def depthFirstSearch(problem):
     If the stack is already empty and the goal state still wasn't reached, the funtion will instead return Directions.STOP
     """
     return [Directions.STOP]
+    util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -163,8 +164,11 @@ def breadthFirstSearch(problem):
                 newdirections = directions + [successor[1]]
                 queue.push((successor[0], newdirections))
                 visited.append(successor[0])
-
+    """
+    If the queue is already empty and the goal state still wasn't reached, the funtion will instead return Directions.STOP
+    """
     return [Directions.STOP]
+    util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
@@ -206,7 +210,9 @@ def uniformCostSearch(problem):
                 if successor[0] not in visited:
                     newdirections = directions + [successor[1]]
                     frontier.push((successor[0],newdirections), problem.getCostOfActions(newdirections))
-
+    """
+    If the priority queue is already empty and the goal state still wasn't reached, the funtion will instead return Directions.STOP
+    """
     return [Directions.STOP]
 
     util.raiseNotDefined()
@@ -262,7 +268,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                     newdirections = directions + [successor[1]]
                     cost = problem.getCostOfActions(newdirections) + heuristic(successor[0],problem)
                     frontier.push((successor[0],newdirections), cost)
-
+    """
+    If the priority queue is already empty and the goal state still wasn't reached, the funtion will instead return Directions.STOP
+    """
     return [Directions.STOP]
     util.raiseNotDefined()
 
